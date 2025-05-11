@@ -1,0 +1,77 @@
+# Файлы и папки, создаваемые PyCharm
+.idea/
+*.iml
+
+# Кеши и временные файлы
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Лог-файлы
+*.log
+
+# Конфигурация окружения
+.env
+.venv
+venv/
+ENV/
+env/
+pip-log.txt
+pip-delete-this-directory.txt
+
+# Файлы виртуальных окружений
+*.swp
+*.swo
+
+# Файлы, создаваемые Jupyter Notebook
+.ipynb_checkpoints
+
+# Файлы зависимостей
+Pipfile
+Pipfile.lock
+poetry.lock
+
+# Файлы кода, сгенерированные Cython
+*.c
+*.so
+
+# Файлы, создаваемые тестовыми фреймворками
+.coverage
+.tox/
+.nox/
+
+# Файлы профилирования
+*.prof
+*.dat
+
+# Бинарные файлы
+*.dll
+*.so
+*.dylib
+*.exe
+
+# Архивы
+*.zip
+*.tar
+*.tar.gz
+*.rar
+
+# Дамп базы данных
+*.sqlite3
+*.db
+
+# CSV-файлы
+*.csv
+
+# JSON-файлы
+*.json
+
+# Docker
+.dockerignore
+
+# Разное
+thumbs.db
+.DS_Store
+#*.jpg
+#*.mp3
+*.mp4

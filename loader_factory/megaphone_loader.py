@@ -11,7 +11,7 @@ import logging
 
 logging.basicConfig(level=logging.INFO, filename="logs.log", filemode="w",
                     format="%(asctime)s %(levelname)s %(message)s")
-from LoaderFactory.abstract_loader import AbstractLoader
+from loader_factory.abstract_loader import AbstractLoader
 
 load_dotenv()
 
@@ -21,8 +21,8 @@ API_URL = 'http://ruproxy.abc-call.ru/megaphone/'
 ORIGINAL_URL = 'https://lift-prom.megapbx.ru/'
 
 class Megaphone_Loader(AbstractLoader):
-    mp3_path = r"LoaderFactory/mp3"
-    csv_path = r"LoaderFactory/csv"
+    mp3_path = r"loader_factory/mp3"
+    csv_path = r"loader_factory/csv"
     megaphone_key = os.getenv('MEGAPHONE_KEY')
     headers = {'X-API-KEY': f'{megaphone_key}'}
     # Define server timezone (adjust as needed, e.g., for Moscow: UTC+3)
@@ -147,11 +147,11 @@ class Megaphone_Loader(AbstractLoader):
                     ]
 
                     recording = Megaphone_Loader.get_recording_safely(self, row['recording_url'].replace(ORIGINAL_URL, API_URL))
-                    with open(f"LoaderFactory/mp3/{i}.mp3", "wb") as f:
+                    with open(f"loader_factory/mp3/{i}.mp3", "wb") as f:
                         f.write(recording._content)
                     i += 1
 
-        df_phones.to_csv('LoaderFactory/csv/all.csv', index=False)
+        df_phones.to_csv('loader_factory/csv/all.csv', index=False)
 
     def main(self, time_from):
         # Get current time in UTC

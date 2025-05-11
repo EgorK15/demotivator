@@ -31,8 +31,8 @@ class MangoLoader:
 
     key = os.getenv('MANGO_KEY')
     salt = os.getenv('MANGO_SALT')
-    mp3_path = r"LoaderFactory/mp3"
-    csv_path = r"LoaderFactory/csv"
+    mp3_path = r"loader_factory/mp3"
+    csv_path = r"loader_factory/csv"
     '''
     language = "ru"
     prompt_file_name = "prompt_file_optics.txt"
@@ -267,9 +267,9 @@ class MangoLoader:
                                             else:
                                                 client_number = int(result["to_number"][row])
                                             recording = MangoLoader.get_recording_safely(self,record)
-                                            with open(f"LoaderFactory/mp3/{k}.mp3", "wb") as f:
+                                            with open(f"loader_factory/mp3/{k}.mp3", "wb") as f:
                                                 f.write(recording.content)
-                                            audio_file=MP3(f"LoaderFactory/mp3/{k}.mp3")
+                                            audio_file=MP3(f"loader_factory/mp3/{k}.mp3")
                                             duration=audio_file.info.length
                                             if duration>30:
                                                 flag=False
@@ -281,11 +281,11 @@ class MangoLoader:
                                                 k += 1
                                             time.sleep(1)
                             if flag:
-                                os.remove(f"LoaderFactory/mp3/{k}.mp3")
+                                os.remove(f"loader_factory/mp3/{k}.mp3")
                         else:
                             logging.info("Mango empty")
             logging.info("Mango ready")
-            df.to_csv(f"LoaderFactory/csv/all.csv", encoding='utf-8')
+            df.to_csv(f"loader_factory/csv/all.csv", encoding='utf-8')
 
 
 

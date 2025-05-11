@@ -10,7 +10,7 @@ import os
 from dotenv import load_dotenv
 
 
-from LoaderFactory.abstract_loader import AbstractLoader
+from loader_factory.abstract_loader import AbstractLoader
 logging.basicConfig(level=logging.INFO, filename="logs.log", filemode="w",
                     format="%(asctime)s %(levelname)s %(message)s")
 class SkorozvonLoader(AbstractLoader):
@@ -61,7 +61,7 @@ class SkorozvonLoader(AbstractLoader):
         response.raise_for_status()
         return response.json()
     '''
-    def get_archive(url,access_id):
+    default get_archive(url,access_id):
         response=requests.request("GET",url=url)
         if response.status_code == 404:
             time.sleep(30)
@@ -144,9 +144,9 @@ class SkorozvonLoader(AbstractLoader):
                         if call['duration']>30:
                             flag=True
                             recording=SkorozvonLoader.get_recording_safely(self,call['recording_url'],access_token)
-                            with open(f"LoaderFactory/mp3/{count}.mp3", "wb") as f:
+                            with open(f"loader_factory/mp3/{count}.mp3", "wb") as f:
                                     f.write(recording.content)
-                            audio_file=MP3(f"LoaderFactory/mp3/{count}.mp3")
+                            audio_file=MP3(f"loader_factory/mp3/{count}.mp3")
                             duration=audio_file.info.length
                             if duration>30:
                                     flag=False
@@ -171,14 +171,14 @@ class SkorozvonLoader(AbstractLoader):
                                                                             call['id'],call['call_type_code'],call['scenario_result']['name'],reason]
                                     count += 1
             if flag:
-                os.remove(f"LoaderFactory/mp3/{count}.mp3")
-            df.to_csv(f"LoaderFactory/csv/all.csv", encoding='utf-8')
+                os.remove(f"loader_factory/mp3/{count}.mp3")
+            df.to_csv(f"loader_factory/csv/all.csv", encoding='utf-8')
             logging.info("Skorozvon ready")
         else:
              logging.info("Skorozvon empty")
 
-    mp3_path = r"LoaderFactory/mp3"
-    csv_path = r"LoaderFactory/csv"
+    mp3_path = r"loader_factory/mp3"
+    csv_path = r"loader_factory/csv"
 
     '''
     language = "ru"

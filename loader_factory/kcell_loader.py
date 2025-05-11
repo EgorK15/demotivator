@@ -8,7 +8,7 @@ from pandas import DataFrame
 from mutagen.mp3 import MP3
 import os
 
-from LoaderFactory.abstract_loader import AbstractLoader
+from loader_factory.abstract_loader import AbstractLoader
 logging.basicConfig(level=logging.INFO, filename='logs.log', filemode="w",
                     format="%(asctime)s %(levelname)s %(message)s")
 class KCellLoader(AbstractLoader):
@@ -92,9 +92,9 @@ class KCellLoader(AbstractLoader):
                                 if call['record'] and call['duration']>30:
                                     flag=True
                                     recording=KCellLoader.get_recording_safely(self,call['record'])
-                                    with open(f"LoaderFactory/mp3/{count}.mp3", "wb") as f:
+                                    with open(f"loader_factory/mp3/{count}.mp3", "wb") as f:
                                         f.write(recording.content)
-                                    audio_file=MP3(f"LoaderFactory/mp3/{count}.mp3")
+                                    audio_file=MP3(f"loader_factory/mp3/{count}.mp3")
                                     duration=audio_file.info.length
                                     if duration>30:
                                         direction="outgoing" if call['type']=='out' else 'incoming'
@@ -108,15 +108,15 @@ class KCellLoader(AbstractLoader):
                                                                                 call['duration']]
                                         count+=1
         if flag:
-            os.remove(f"LoaderFactory/mp3/{count}.mp3")
+            os.remove(f"loader_factory/mp3/{count}.mp3")
         if empty:
             logging.info("KCell empty")
         else:
-            df.to_csv(f"LoaderFactory/csv/all.csv", encoding='utf-8')
+            df.to_csv(f"loader_factory/csv/all.csv", encoding='utf-8')
             logging.info("KCell ready")
 
-    mp3_path = r"LoaderFactory/mp3"
-    csv_path = r"LoaderFactory/csv"
+    mp3_path = r"loader_factory/mp3"
+    csv_path = r"loader_factory/csv"
 
     '''govno dlya egorika
     language = "kk"
