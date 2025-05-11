@@ -1,5 +1,5 @@
 # pillow-9.1.0
-from demotivator import Demotivator
+from generation import demotivator
 
 IMG1 = '../audio/default/img1.jpg'
 IMG2 = '../audio/default/img2.jpg'
@@ -20,7 +20,7 @@ def create_img_rec(segments, img1, img2, index):
     if index == len(segments):
         return
     text = segments[index][0].upper()
-    demotivator = Demotivator(text)
+    demotivator = demotivator.Demotivator(text)
     # АНАКОНДА
     #
     if segments[index][1] == "SPEAKER_00":

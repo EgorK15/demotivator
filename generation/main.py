@@ -1,5 +1,5 @@
-from gen_frame import create_demotivator
-from transcribe import transcribe_and_diarize_audio
+from generation import gen_frame
+from generation import transcribe
 from moviepy.editor import *
 
 DIR = "../temp_img/dem"
@@ -45,10 +45,10 @@ def create_video(audio_file: str, img1: str, img2: str):
     """
     # Получаем сегменты аудио с распознанным текстом и спикерами
     # segments = SEGMENTS
-    segments = transcribe_and_diarize_audio(audio_file=audio_file, batch_size=16, compute_type="int8", device="cpu")
+    segments = transcribe.transcribe_and_diarize_audio(audio_file=audio_file, batch_size=16, compute_type="int8", device="cpu")
 
     # Создаем демотиваторы на основе сегментов и изображений
-    create_demotivator(segments, img1, img2)
+    gen_frame.create_demotivator(segments, img1, img2)
 
     # Создаем временную шкалу для сегментов
     time = timeline(segments, AudioFileClip(audio_file).duration)
