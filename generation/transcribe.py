@@ -10,17 +10,17 @@ load_dotenv(find_dotenv())
 
 YOUR_HF_TOKEN = os.getenv("HF_TOKEN")
 
-audio_file = "audio/audio1.mp3"
+audio_file = "resource/audio1.mp3"
 batch_size = 16  # Reduce if low on GPU mem
 compute_type = "int8"  # Change to "int8" if low on GPU mem (may reduce accuracy)
 device = "cpu"
 
 
 def parse_arguments():
-    parser = argparse.ArgumentParser(description="Transcribe and diarize an audio file using WhisperX.")
+    parser = argparse.ArgumentParser(description="Transcribe and diarize an resource file using WhisperX.")
 
     # Add arguments for audio_file, batch_size, compute_type, and device
-    parser.add_argument("--audio_file", type=str, help="Path to the input MP3 audio file.", default=audio_file)
+    parser.add_argument("--audio_file", type=str, help="Path to the input MP3 resource file.", default=audio_file)
     parser.add_argument("--batch_size", type=int, help="Batch size for inference.", default=batch_size)
     parser.add_argument("--compute_type", type=str, choices=["int8", "float16"],
                         help="Compute type for model inference.", default=compute_type)

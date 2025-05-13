@@ -120,3 +120,9 @@ class Demotivator:
             os.remove(file)
 
         return True
+
+
+if  __name__ == "__main__":
+    demotivator = Demotivator("VIDEO")
+    demotivator.create(file='resource/presentation/1.jpg', font_name="IBMPlexSans-Regular.ttf", result_filename='demresult.jpg', watermark='ANACONDA',
+                       arrange=True, use_url=False)

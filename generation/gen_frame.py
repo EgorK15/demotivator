@@ -1,9 +1,9 @@
 # pillow-9.1.0
 from generation import demotivator
 
-IMG1 = '../audio/default/img1.jpg'
-IMG2 = '../audio/default/img2.jpg'
-DIR = "../temp_img/"
+IMG1 = '../resource/default/img1.jpg'
+IMG2 = '../resource/default/img2.jpg'
+DIR = "temp_img/"
 SEGMENTS = [(' Здравствуйте.', 'SPEAKER_00', 0.031, 5.06), ('Здравствуйте.', 'SPEAKER_00', 5.08, 6.182),
                 ('Меня зовут Вероника.', 'SPEAKER_00', 6.202, 7.404),
                 ('Это федеральный юридический центр.', 'SPEAKER_00', 7.424, 8.646),
@@ -20,15 +20,15 @@ def create_img_rec(segments, img1, img2, index):
     if index == len(segments):
         return
     text = segments[index][0].upper()
-    demotivator = demotivator.Demotivator(text)
+    demotivat = demotivator.Demotivator(text)
     # АНАКОНДА
-    #
+
     if segments[index][1] == "SPEAKER_00":
-        demotivator.create(file=img1, result_filename=f"{DIR}dem{index}.jpg", fill_color='black',
+        demotivat.create(file=img1, result_filename=f"{DIR}dem{index}.jpg", fill_color='black',
                            font_name='IslandOfTreasure-Regular.otf', watermark='АНАКОНДА', arrange=False)
         create_img_rec(segments, f"{DIR}dem{index}.jpg", img2, index + 1)
     else:
-        demotivator.create(file=img2, result_filename=f"{DIR}dem{index}.jpg", fill_color='black',
+        demotivat.create(file=img2, result_filename=f"{DIR}dem{index}.jpg", fill_color='black',
                            font_name='IslandOfTreasure-Regular.otf', watermark='АНАКОНДА', arrange=False)
         create_img_rec(segments, img1, f"{DIR}dem{index}.jpg", index + 1)
 

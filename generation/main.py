@@ -2,10 +2,10 @@ from generation import gen_frame
 from generation import transcribe
 from moviepy.editor import *
 
-DIR = "../temp_img/dem"
-IMG1 = '../audio/default/1.jpg'
-IMG2 = '../audio/default/2.jpg'
-AUDIO = '../audio/default/1.mp3'
+DIR = 'temp_img/dem'
+IMG1 = 'resource/default/1.jpg'
+IMG2 = 'resource/default/2.jpg'
+AUDIO = 'resource/default/1.mp3'
 SEGMENTS = [
     ('Здравствуйте.', 'SPEAKER_00', 0.031, 5.06),
     ('Здравствуйте.', 'SPEAKER_00', 5.08, 6.182),
@@ -21,6 +21,7 @@ SEGMENTS = [
     ('С утра еще звонят, козлы ебаные пляшут.', 'SPEAKER_01', 30.576, 34.003)
 ]
 
+
 def timeline(segments, length_audio):
     """
     Создает временную шкалу для сегментов аудио.
@@ -35,17 +36,21 @@ def timeline(segments, length_audio):
 
     return time
 
-def create_video(audio_file: str, img1: str, img2: str):
+
+def create_video(audio_file: str, img1: str, img2: str, result_filename: str = "output/1.mp4"):
     """
     Создает видео-демотиватор на основе аудио и изображений.
 
     :param audio_file: Путь к аудиофайлу.
     :param img1: Путь к изображению для первого спикера.
     :param img2: Путь к изображению для второго спикера.
+    :param result_filename: Имя выходного видеофайла.
     """
+
     # Получаем сегменты аудио с распознанным текстом и спикерами
     # segments = SEGMENTS
-    segments = transcribe.transcribe_and_diarize_audio(audio_file=audio_file, batch_size=16, compute_type="int8", device="cpu")
+    segments = transcribe.transcribe_and_diarize_audio(audio_file=audio_file, batch_size=16, compute_type="int8",
+                                                       device="cpu")
 
     # Создаем демотиваторы на основе сегментов и изображений
     gen_frame.create_demotivator(segments, img1, img2)
@@ -67,8 +72,8 @@ def create_video(audio_file: str, img1: str, img2: str):
     final_video = video.set_audio(audio_clip)
 
     # Сохраняем видео в файл
-    output_file = "output_video.mp4"
-    final_video.write_videofile(output_file, codec='libx264', audio_codec='aac', temp_audiofile='temp-audio.m4a', remove_temp=True, fps=24)
+    final_video.write_videofile(result_filename, codec='libx264', audio_codec='aac', temp_audiofile='temp-resource.m4a',
+                                remove_temp=True, fps=24)
 
     # Удаляем временные файлы
     for img_path, _ in time:
