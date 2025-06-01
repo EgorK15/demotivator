@@ -10,7 +10,7 @@ ROOT_DIR = Path(__file__).resolve().parent
 print(f"ROOT_DIR: {ROOT_DIR}")
 
 # Определяем пути к ресурсам
-DIR = str(ROOT_DIR) + '/temp_img/dem'
+TEMP = str(ROOT_DIR) + '/temp_img/'
 IMG1 = str(ROOT_DIR) + '/resource/1.jpg'
 IMG2 = str(ROOT_DIR) + '/resource/2.jpg'
 AUDIO = str(ROOT_DIR) + '/resource/1.mp3'
@@ -32,17 +32,18 @@ SEGMENTS = [
 ]
 
 
-def timeline(segments, length_audio):
+def timeline(segments, length_audio, directory=TEMP):
     """
     Создает временную шкалу для сегментов аудио.
 
     :param segments: Список сегментов с текстом, спикером и временными метками.
     :return: Список сегментов с обновленными временными метками.
     """
-    time = [[f"{DIR}0.jpg", round(segments[1][2], 4)]]
+    print(f"{directory}dem0.jpg")
+    time = [[f"{directory}dem0.jpg", round(segments[1][2], 4)]]
     for i in range(1, len(segments) - 1):
-        time.append([f"{DIR}{i}.jpg", round(segments[i + 1][2] - segments[i][2], 4)])
-    time.append([f"{DIR}{len(segments) - 1}.jpg", round(length_audio - segments[len(segments) - 1][2], 4)])
+        time.append([f"{directory}dem{i}.jpg", round(segments[i + 1][2] - segments[i][2], 4)])
+    time.append([f"{directory}dem{len(segments) - 1}.jpg", round(length_audio - segments[len(segments) - 1][2], 4)])
 
     return time
 
@@ -58,15 +59,15 @@ def create_video(audio_file: str = AUDIO, img1: str = IMG1, img2: str = IMG2, re
     """
 
     # Получаем сегменты аудио с распознанным текстом и спикерами
-    # segments = SEGMENTS
     segments = transcribe.transcribe_and_diarize_audio(audio_file=audio_file, batch_size=16, compute_type="int8",
                                                        device="cpu")
+    # segments = SEGMENTS
 
     # Создаем демотиваторы на основе сегментов и изображений
-    gen_frame.create_demotivator(segments, img1, img2)
+    gen_frame.create_demotivator(segments=segments, img1=img1, img2=img2, directory=TEMP)
 
     # Создаем временную шкалу для сегментов
-    time = timeline(segments, AudioFileClip(audio_file).duration)
+    time = timeline(segments, AudioFileClip(audio_file).duration, TEMP)
 
     # Создаем список клипов для каждого сегмента
     clips = []
