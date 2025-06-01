@@ -1,11 +1,21 @@
+import argparse
+
 from generation import gen_frame
 from generation import transcribe
+from pathlib import Path
 from moviepy.editor import *
 
-DIR = 'temp_img/dem'
-IMG1 = 'resource/default/1.jpg'
-IMG2 = 'resource/default/2.jpg'
-AUDIO = 'resource/default/1.mp3'
+# Определяем корневую директорию проекта
+ROOT_DIR = Path(__file__).resolve().parent
+print(f"ROOT_DIR: {ROOT_DIR}")
+
+# Определяем пути к ресурсам
+DIR = str(ROOT_DIR) + '/temp_img/dem'
+IMG1 = str(ROOT_DIR) + '/resource/1.jpg'
+IMG2 = str(ROOT_DIR) + '/resource/2.jpg'
+AUDIO = str(ROOT_DIR) + '/resource/1.mp3'
+OUTPUT = str(ROOT_DIR) + '/output/1.mp4'
+
 SEGMENTS = [
     ('Здравствуйте.', 'SPEAKER_00', 0.031, 5.06),
     ('Здравствуйте.', 'SPEAKER_00', 5.08, 6.182),
@@ -17,8 +27,8 @@ SEGMENTS = [
     ('Чё хотела?', 'SPEAKER_01', 19.304, 21.088),
     ('Процедурой банкротства интересовались?', 'SPEAKER_00', 21.108, 23.191),
     ('Вы хотели консультацию получить?', 'SPEAKER_00', 23.211, 24.233),
-    ('Да послушайте, идите все нахуй, меня так заebали уже.', 'SPEAKER_01', 26.947, 30.515),
-    ('С утра еще звонят, козлы ебаные пляшут.', 'SPEAKER_01', 30.576, 34.003)
+    ('Да послушайте, идите все нахuй, меня так заebали уже.', 'SPEAKER_01', 26.947, 30.515),
+    ('С утра еще звонят, козлы еbаные пляшут.', 'SPEAKER_01', 30.576, 34.003)
 ]
 
 
@@ -37,7 +47,7 @@ def timeline(segments, length_audio):
     return time
 
 
-def create_video(audio_file: str, img1: str, img2: str, result_filename: str = "output/1.mp4"):
+def create_video(audio_file: str = AUDIO, img1: str = IMG1, img2: str = IMG2, result_filename: str = OUTPUT):
     """
     Создает видео-демотиватор на основе аудио и изображений.
 
@@ -81,4 +91,10 @@ def create_video(audio_file: str, img1: str, img2: str, result_filename: str = "
 
 
 if __name__ == "__main__":
-    create_video(AUDIO, IMG1, IMG2)
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--audio_file", type=str, default=AUDIO)
+    parser.add_argument("--img1", type=str, default=IMG1)
+    parser.add_argument("--img2", type=str, default=IMG2)
+    parser.add_argument("--output", type=str, default=OUTPUT)
+    args = parser.parse_args()
+    create_video(audio_file=args.audio_file, img1=args.img1, img2=args.img2, result_filename=args.output)

@@ -72,6 +72,6 @@ poetry.lock
 # Разное
 thumbs.db
 .DS_Store
-*.jpg
-*.mp3
+#*.jpg
+#*.mp3
 *.mp4

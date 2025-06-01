@@ -1,20 +1,15 @@
+import os
 import whisperx
+import argparse
 from mutagen.mp3 import MP3
 from dotenv import load_dotenv, find_dotenv
 from huggingface_hub import login
-import os
-import argparse
 
-# Загрузка переменных окружения из файла .env
-load_dotenv(find_dotenv())
-
-YOUR_HF_TOKEN = os.getenv("HF_TOKEN")
-
+# Переменные для тестирования
 audio_file = "resource/audio1.mp3"
 batch_size = 16  # Reduce if low on GPU mem
 compute_type = "int8"  # Change to "int8" if low on GPU mem (may reduce accuracy)
 device = "cpu"
-
 
 def parse_arguments():
     parser = argparse.ArgumentParser(description="Transcribe and diarize an resource file using WhisperX.")
@@ -32,8 +27,12 @@ def parse_arguments():
 
 def transcribe_and_diarize_audio(audio_file=audio_file, batch_size=batch_size, compute_type=compute_type, device=device):
     model = whisperx.load_model("large-v2", "cpu", compute_type=compute_type)
-    # YOUR_HF_TOKEN = "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"
+    # Load environment variables
+    load_dotenv(find_dotenv())
+    YOUR_HF_TOKEN = os.getenv("HF_TOKEN")
     login(token=YOUR_HF_TOKEN)
+
+    # Load the audio file
     audio = whisperx.load_audio(audio_file)
     result = model.transcribe(audio, batch_size=batch_size)
 
@@ -49,9 +48,21 @@ def transcribe_and_diarize_audio(audio_file=audio_file, batch_size=batch_size, c
     diarize_segments = diarize_model(audio, num_speakers=2)
 
     result = whisperx.assign_word_speakers(diarize_segments, result)
+    print(result)
 
-    segments = [(segment["text"], segment["speaker"], segment["start"], segment["end"]) for segment in
-                result["segments"]]
+    # Resolved bug with empty speaker
+    segments = []
+    for segment in result["segments"]:
+        text = segment["text"]
+        start = segment["start"]
+        end = segment["end"]
+        speaker = "SPEAKER_00"
+        try:
+            speaker = segment["speaker"]
+        except:
+            pass
+
+        segments.append((text, speaker, start, end))
 
     return segments
 
